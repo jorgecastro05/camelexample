@@ -1,0 +1,2 @@
+docker tag $(docker images | grep myproject/spring-docker | awk '{ print $3 }' | head -n 1) $(minishift openshift registry)/myproject/spring-docker
+docker push $(minishift openshift registry)/myproject/spring-docker

@@ -77,6 +77,16 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-freemarker</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-xmljson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>xom</groupId>
+            <artifactId>xom</artifactId>
+            <version>1.2.5</version>
+        </dependency>
 
 
         <!-- properties support -->

@@ -1,10 +1,8 @@
 package com.example;
 
-import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.dataformat.xmljson.XmlJsonDataFormat;
-import org.apache.camel.impl.DefaultExchange;
 import org.apache.camel.spi.DataFormat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -36,7 +34,7 @@ public class MySpringBootRouter extends RouteBuilder {
         rest().post().to("direct:transformJson");
 
         from("direct:defaultErrorHandler").routeId("errorHandler")
-                .log(LoggingLevel.ERROR,"${exception.message}")
+                .log(LoggingLevel.ERROR, "${exception.message}")
                 .transform(simple("${exception.message} ${messageHistory}"))
                 .to("freemarker:templates/error.ftl");
 
@@ -48,6 +46,11 @@ public class MySpringBootRouter extends RouteBuilder {
         from("direct:transformJson").routeId("routePost")
                 .setHeader("content-type", constant("text/xml"))
                 .unmarshal("xmljson");
+
+        from("file:data?noop=true")
+                .to("schematron:validators/schematron.sch")
+                .log("${headers.CamelSchematronValidationStatus}")
+                .log("${headers.CamelSchematronValidationReport}");
 
     }
 
